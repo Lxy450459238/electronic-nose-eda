@@ -2,6 +2,8 @@
 
 电子鼻传感器数据的探索性数据分析（EDA）工具。支持旧版（37传感器）和新版（49传感器）硬件自动识别。
 
+> GitHub: [https://github.com/Lxy450459238/electronic-nose-eda](https://github.com/Lxy450459238/electronic-nose-eda)
+
 ## 文件说明
 
 | 文件 | 说明 |
