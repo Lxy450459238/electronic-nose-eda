@@ -4,6 +4,94 @@
 
 > GitHub: [https://github.com/Lxy450459238/electronic-nose-eda](https://github.com/Lxy450459238/electronic-nose-eda)
 
+---
+
+## 一键复现指南
+
+### 第 1 步：获取代码
+
+```bash
+git clone https://github.com/Lxy450459238/electronic-nose-eda.git
+cd electronic-nose-eda
+```
+
+如果网络不通，也可以直接下载 ZIP 压缩包解压。
+
+### 第 2 步：一键安装环境
+
+确保电脑已安装 Python 3.8 及以上版本，然后在项目目录下执行：
+
+```bash
+pip install -r requirements.txt
+```
+
+这会自动安装 `numpy`、`pandas`、`matplotlib`、`seaborn`、`scipy` 五个依赖包，无需逐个手动安装。
+
+### 第 3 步：准备数据
+
+将待分析的 `.txt` 数据文件放到任意目录下。数据需满足：
+
+- 空格分隔的文本文件
+- 第 5 列为阶段标签（P13 / P14 / P15 / P16 / P17 / P18）
+- 旧版电子鼻（37 传感器）：至少 51 列
+- 新版电子鼻（49 传感器）：至少 83 列
+- 文件名建议遵循 `日期-编号-气体-浓度-重复次数.txt` 格式
+
+### 第 4 步：运行分析
+
+**分析单个文件：**
+
+```bash
+python single.py 数据文件路径
+```
+
+示例：
+
+```bash
+python single.py D:\data\20230320-302-bingtong-30ppm-1.txt
+```
+
+输出 5 张图 + 1 份文本报告，保存在 `EDATestResult/` 目录下。
+
+**批量分析一个文件夹中的所有文件：**
+
+```bash
+python multi.py 数据文件夹路径
+```
+
+示例：
+
+```bash
+python multi.py D:\data\多样性样本2
+```
+
+输出 6 张图 + 1 份文本报告，保存在 `EDATestResult/` 目录下。
+
+### 第 5 步：查看结果
+
+打开项目目录下的 `EDATestResult/` 文件夹，包含：
+
+| 单文件输出 | 多文件输出 |
+|-----------|-----------|
+| `*_timeseries.png` — 全周期时间序列 | `01_boxplot.png` — 各传感器响应分布 |
+| `*_baseline_boxplot.png` — 基线箱线图 | `02_timeseries.png` — 时间序列采样 |
+| `*_response_delta.png` — 响应增量图 | `03_histogram.png` — 响应直方图 |
+| `*_temporal_correlation.png` — 相关热力图 | `04_correlation_heatmap.png` — 相关系数矩阵 |
+| `*_radar_comparison.png` — 雷达对比图 | `05_*_radar.png` — 雷达图 |
+| `*_report.txt` — 文本评估报告 | `06_*.png` — 稳定性表/区分度排名 |
+| | `multi_file_report.txt` — 文本评估报告 |
+
+### 常见问题
+
+| 问题 | 解决方法 |
+|------|---------|
+| 报错 `找不到文件` | 用引号包裹含括号/空格的路径，或使用绝对路径 |
+| 报错 `文件夹中没有找到txt文件` | 确保文件夹路径正确，且内部有 `.txt` 文件 |
+| 报错 `数据文件列数不足` | 检查数据格式：旧版需 ≥51 列，新版需 ≥83 列 |
+| 中文图表乱码 | 确保 `C:\Windows\Fonts\simhei.ttf`（黑体）存在 |
+
+---
+
 ## 文件说明
 
 | 文件 | 说明 |
@@ -13,56 +101,8 @@
 | `multi.py` | 多文件分析：批量对比多个样本的稳定性/区分度 |
 | `算法说明书.docx` | 算法原理详细文档 |
 | `修改细节.md` | 整理过程中的所有修改记录 |
-| `算法说明书-更新方案.md` | docx 文档更新建议方案 |
-
-## 环境要求
-
-- Python 3.8+
-- numpy, pandas, matplotlib, seaborn, scipy
-
-```bash
-pip install numpy pandas matplotlib seaborn scipy
-```
-
-## 使用方法
-
-### 单文件分析
-
-```bash
-python single.py <txt文件路径>
-```
-
-对单个电子鼻实验数据文件进行全流程分析，包括：
-- 阶段自动识别（P13基线 → P14备用基线 → P15进样 → P16清洗 → P17二次进样 → P18二次清洗）
-- 基线稳定性评估（四维融合判定）
-- 进样响应分析
-- 清洗恢复度评估
-- 硬件环境体检（温度、湿度、气压、电压）
-- 综合质量评分（0-100）
-
-输出：时间序列图、箱线图、响应增量图、相关系数热力图、雷达图、文本报告
-
-### 多文件分析
-
-```bash
-python multi.py <文件夹路径>
-```
-
-对一批实验数据文件进行批量对比分析，包括：
-- 硬件环境体检（温度、湿度、气压、电压）
-- 样本多样性自动判定
-- 低多样性场景：传感器稳定性评估
-- 高多样性场景：传感器区分度排名（SNR+F值自适应归一化）
-- 异常样本检测
-
-输出：箱线图、直方图、热力图、雷达图、稳定性表/区分度排名图、文本报告
 
 ## 数据格式要求
-
-- 文本文件（.txt），空格分隔
-- 第5列为阶段标签（P13-P18）
-- 旧版（37传感器）：至少51列
-- 新版（49传感器）：至少83列
 
 ## 输出目录
 
