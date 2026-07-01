@@ -2,3 +2,9 @@ __pycache__/
 *.pyc
 ~$*.docx
 _tmp_docx/
+EDATestResult/
+multi_file_output/
+*.drawio.png
+.$*.bkp
+EDA6.9打包/
+EDA6.9打包.rar

@@ -1,0 +1,264 @@
+<mxfile host="Electron">
+  <diagram name="EDA单文件架构" id="0">
+    <mxGraphModel dx="2162" dy="1273" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="2500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="2" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1A237E;" value="单文件 EDA（single.py）完整架构" vertex="1">
+          <mxGeometry height="40" width="700" x="400" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L1" parent="1" style="swimlane;startSize=32;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;fontColor=#1565C0;swimlaneFillColor=#E3F2FD;rounded=1;" value="一、输入层 (Input)" vertex="1">
+          <mxGeometry height="80" width="1420" x="40" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="L1_box" parent="L1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;fontColor=#1565C0;" value="单个电子鼻实验原始 txt 数据文件&amp;nbsp;" vertex="1">
+          <mxGeometry height="31" width="1160" x="130" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" edge="1" parent="1" source="L1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#546E7A;fontSize=14;" target="L2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L2" parent="1" style="swimlane;startSize=32;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;fontColor=#2E7D32;swimlaneFillColor=#E8F5E9;rounded=1;" value="二、初始化与解析预处理层 (parse_file)" vertex="1">
+          <mxGeometry height="210" width="1420" x="40" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_b1" parent="L2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=14;fontColor=#33691E;" value="版本自动识别&#xa;检测数据列数→匹配 37/49 传感器硬件版本" vertex="1">
+          <mxGeometry height="52" width="320" x="30" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_b2" parent="L2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=14;fontColor=#33691E;" value="元数据提取&#xa;正则匹配日期 + 气体类型/浓度/平行样编号" vertex="1">
+          <mxGeometry height="52" width="320" x="370" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_b3" parent="L2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=14;fontColor=#33691E;" value="数据通道拆分&#xa;传感器数据 | 环境监控 | 时间戳 | 阶段标签列" vertex="1">
+          <mxGeometry height="52" width="320" x="710" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_b4" parent="L2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=14;fontColor=#33691E;" value="阶段自动识别&#xa;按标签拆分 P13 / P14 / P15 / P16 / P17 / P18" vertex="1">
+          <mxGeometry height="52" width="340" x="1050" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_b5" parent="L2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82b366;fontSize=14;fontColor=#33691E;fontStyle=1;" value="首行零值同步裁切：每个阶段前 N 行核心传感器全零行剔除 → 时间戳与索引同步裁切" vertex="1">
+          <mxGeometry height="35" width="1020" x="200" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="L2_a1" edge="1" parent="L2" source="L2_b2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;strokeColor=#A5D6A7;fontSize=14;" target="L2_b5" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="530" y="110" />
+              <mxPoint x="710" y="110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="L2_stats" parent="L2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#A5D6A7;fontSize=14;fontColor=#2E7D32;align=center;" value="统计量产出: 均值 | 标准差 | 方差 | CV | 极差 | IQR边界 | 阶段数据字典" vertex="1">
+          <mxGeometry height="25" width="760" x="330" y="168" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" edge="1" parent="1" source="L2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#546E7A;fontSize=14;" target="L3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L3" parent="1" style="swimlane;startSize=32;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;fontStyle=1;fontColor=#E65100;swimlaneFillColor=#FFF3E0;rounded=1;" value="三、全局硬件环境体检层 (analyze_environment)" vertex="1">
+          <mxGeometry height="150" width="1420" x="40" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_b1" parent="L3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d79b00;fontSize=14;fontColor=#E65100;" value="供电电压校验&#xa;均值范围 + 波动幅度(STD)" vertex="1">
+          <mxGeometry height="52" width="310" x="30" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_b2" parent="L3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d79b00;fontSize=14;fontColor=#E65100;" value="温度稳定性校验&#xa;均值范围 + 漂移幅度" vertex="1">
+          <mxGeometry height="52" width="310" x="370" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_b3" parent="L3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d79b00;fontSize=14;fontColor=#E65100;" value="湿度稳定性校验&#xa;均值范围 + 漂移幅度" vertex="1">
+          <mxGeometry height="52" width="310" x="710" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_b4" parent="L3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#d79b00;fontSize=14;fontColor=#E65100;" value="气压稳定性校验&#xa;均值范围 + 波动幅度" vertex="1">
+          <mxGeometry height="52" width="340" x="1050" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L3_warn" parent="L3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FF8F00;fontSize=14;fontColor=#E65100;fontStyle=1;" value="异常标记 → env_warnings 列表 → 报告置顶显示 [优先检查]" vertex="1">
+          <mxGeometry height="28" width="820" x="300" y="112" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" edge="1" parent="1" source="L3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#546E7A;fontSize=14;" target="L4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L4" parent="1" style="swimlane;startSize=32;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;fontColor=#7B1FA2;swimlaneFillColor=#F3E5F5;rounded=1;" value="四、核心分析层 (按执行顺序)" vertex="1">
+          <mxGeometry height="720" width="1420" x="40" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="L4A" parent="L4" style="swimlane;startSize=26;fillColor=#EDE7F6;strokeColor=#B39DDB;fontSize=14;fontStyle=1;fontColor=#6A1B9A;swimlaneFillColor=#F5F0FF;rounded=1;" value="(一) 基线稳定性分析 (analyze_baseline)" vertex="1">
+          <mxGeometry height="148" width="1380" x="20" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="4A_b1" parent="L4A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="基线择优&#xa;P13四维初判 → 超标则降级P14" vertex="1">
+          <mxGeometry height="48" width="210" x="170" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4A_b2" parent="L4A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="四维融合判定&#xa;A.大均值CV B.小均值STD兜底&#xa;C.全局STD红线 D.极差漂移" vertex="1">
+          <mxGeometry height="48" width="310" x="410" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4A_b3" parent="L4A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="离群点/毛刺检测&#xa;3×IQR边界 → 异常率&amp;gt;5%标记" vertex="1">
+          <mxGeometry height="48" width="230" x="740" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4A_b4" parent="L4A" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#66BB6A;fontSize=14;fontColor=#1B5E20;fontStyle=1;" value="评分: 稳定+20 / 不稳定超标-15 / 毛刺-10(一次)" vertex="1">
+          <mxGeometry height="48" width="260" x="1060" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4A_stats" parent="L4A" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#D1C4E9;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="基础统计量: 均值 | 标准差 | 方差 | 变异系数CV | 极差PTP | IQR边界 | 离群点占比" vertex="1">
+          <mxGeometry height="24" width="690" x="280" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="a4A_4B" edge="1" parent="L4" source="L4A" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;strokeColor=#B39DDB;strokeWidth=1.5;fontSize=14;" target="L4B" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L4B" parent="L4" style="swimlane;startSize=26;fillColor=#EDE7F6;strokeColor=#B39DDB;fontSize=14;fontStyle=1;fontColor=#6A1B9A;swimlaneFillColor=#F5F0FF;rounded=1;" value="(二) 进样阶段分析 (analyze_sampling)" vertex="1">
+          <mxGeometry height="142" width="1380" x="20" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="4B_b1" parent="L4B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="阶段自动匹配&#xa;P15优先 → P17回退" vertex="1">
+          <mxGeometry height="48" width="200" x="160" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4B_b2" parent="L4B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="稳态值提取&#xa;滑动窗口波动校验 + 后续差分校验&#xa;防伪稳态" vertex="1">
+          <mxGeometry height="48" width="260" x="420" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4B_b3" parent="L4B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="响应量计算&#xa;绝对响应增量 + 归一化响应比率&#xa;比率&amp;gt;0.1→有效响应传感器" vertex="1">
+          <mxGeometry height="48" width="280" x="710" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4B_b4" parent="L4B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#66BB6A;fontSize=14;fontColor=#1B5E20;fontStyle=1;" value="评分: 响应≥10 +25 / &amp;lt;10 -15" vertex="1">
+          <mxGeometry height="48" width="220" x="1060" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4B_dual" parent="L4B" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#90CAF9;fontSize=14;fontColor=#0D47A1;fontStyle=1;" value="P15+P17 同时存在 → 双次进样一致性校验: 皮尔逊 r&amp;gt;0.95 +10 / r&amp;lt;0.7 -10" vertex="1">
+          <mxGeometry height="30" width="580" x="420" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="a4B_4C" edge="1" parent="L4" source="L4B" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;strokeColor=#B39DDB;strokeWidth=1.5;fontSize=14;" target="L4C" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L4C" parent="L4" style="swimlane;startSize=26;fillColor=#EDE7F6;strokeColor=#B39DDB;fontSize=14;fontStyle=1;fontColor=#6A1B9A;swimlaneFillColor=#F5F0FF;rounded=1;" value="(三) 时间序列相关性分析 (calculate_temporal_correlation)" vertex="1">
+          <mxGeometry height="100" width="1380" x="20" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="4C_b1" parent="L4C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="数据截取: 进样阶段前50%动态爬坡数据" vertex="1">
+          <mxGeometry height="40" width="320" x="170" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4C_b2" parent="L4C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="矩阵计算: 全传感器两两皮尔逊相关系数" vertex="1">
+          <mxGeometry height="40" width="320" x="520" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4C_b3" parent="L4C" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="筛选输出: |r|&amp;gt;0.8 高相关对 + 前15排序输出" vertex="1">
+          <mxGeometry height="40" width="320" x="860" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="a4C_4D" edge="1" parent="L4" source="L4C" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;strokeColor=#B39DDB;strokeWidth=1.5;fontSize=14;" target="L4D" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L4D" parent="L4" style="swimlane;startSize=26;fillColor=#EDE7F6;strokeColor=#B39DDB;fontSize=14;fontStyle=1;fontColor=#6A1B9A;swimlaneFillColor=#F5F0FF;rounded=1;" value="(四) 清洗阶段分析 (analyze_cleaning) " vertex="1">
+          <mxGeometry height="180" width="1380" x="20" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b1" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="阶段匹配&#xa;P15→P16(无则P18)&#xa;P17→P18" vertex="1">
+          <mxGeometry height="52" width="200" x="170" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b2" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="清洗稳态提取&#xa;末端向前反向搜索&#xa;窗口波动 &amp;lt; 基线5%" vertex="1">
+          <mxGeometry height="52" width="220" x="420" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b3" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="残留率计算&#xa;统一取绝对值，恒≥0&#xa;数学定义自洽" vertex="1">
+          <mxGeometry height="52" width="210" x="700" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b4" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#E53935;fontSize=14;fontColor=#C62828;fontStyle=1;" value="反向越界检测与二级分类&#xa;resp_amp×resid&amp;lt;0→越过基线&#xa;≤50%过度清洗 | &amp;gt;50%基线漂移" vertex="1">
+          <mxGeometry height="52" width="310" x="1015" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b5" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B39DDB;fontSize=14;fontColor=#4A148C;" value="优良率统计(方案A)&#xa;排除越界传感器，仅统计正常通道&#xa;优秀&amp;lt;5% | 良好5-15% | 较差≥25%" vertex="1">
+          <mxGeometry height="52" width="380" x="170" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="4D_b6" parent="L4D" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#66BB6A;fontSize=14;fontColor=#1B5E20;fontStyle=1;" value="评分: 优良率≥80% +10 / 均残留≤15% +5 / 否则-10&lt;br&gt;越界占比&amp;gt;15% → 硬件状态警告&amp;nbsp;" vertex="1">
+          <mxGeometry height="52" width="380" x="980" y="36" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" edge="1" parent="1" source="L4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#546E7A;fontSize=14;" target="L5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L5" parent="1" style="swimlane;startSize=32;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;fontStyle=1;fontColor=#C62828;swimlaneFillColor=#FFEBEE;rounded=1;" value="五、综合质量评分层 (calculate_quality_score)" vertex="1">
+          <mxGeometry height="110" width="1420" x="40" y="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="L5_b1" parent="L5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#b85450;fontSize=14;fontStyle=1;fontColor=#C62828;" value="基础分: 50" vertex="1">
+          <mxGeometry height="40" width="180" x="210" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L5_b2" parent="L5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#b85450;fontSize=14;fontColor=#C62828;" value="分项累加: 基线 + 进样 + 清洗 + 一致性 + 毛刺 等" vertex="1">
+          <mxGeometry height="40" width="420" x="460" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="L5_b4" parent="L5" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#FF8F00;fontSize=14;fontColor=#E65100;fontStyle=1;" value="≥80 优秀(保留) | 60-79 良好(注意警告) | &amp;lt;60 较差(人工复查)" vertex="1">
+          <mxGeometry height="40" width="460" x="930" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" edge="1" parent="1" source="L5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=1;strokeWidth=2;strokeColor=#546E7A;fontSize=14;" target="L6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="L6" parent="1" style="swimlane;startSize=32;fillColor=#e0f2f1;strokeColor=#00897B;fontSize=14;fontStyle=1;fontColor=#00695C;swimlaneFillColor=#E0F2F1;rounded=1;" value="六、结果输出层 (Output)" vertex="1">
+          <mxGeometry height="210" width="1420" x="40" y="1510" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_report" parent="L6" style="swimlane;startSize=24;fillColor=#FFFFFF;strokeColor=#00897B;fontSize=14;fontStyle=1;fontColor=#00695C;swimlaneFillColor=#E0F2F1;rounded=1;" value="文本报告 (save_text_report)" vertex="1">
+          <mxGeometry height="155" width="380" x="30" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_r1" parent="L6_report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B2DFDB;strokeColor=#00897B;fontSize=14;fontStyle=1;fontColor=#004D40;" value="质量评估报告.txt" vertex="1">
+          <mxGeometry height="30" width="350" x="15" y="35" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_r2" parent="L6_report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="全模块明细 (阶段识别/基线/进样/清洗/相关性)" vertex="1">
+          <mxGeometry height="25" width="350" x="15" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_r3" parent="L6_report" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="异常警告列表 + 综合评分 + 使用建议" vertex="1">
+          <mxGeometry height="25" width="350" x="15" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_viz" parent="L6" style="swimlane;startSize=24;fillColor=#FFFFFF;strokeColor=#00897B;fontSize=14;fontStyle=1;fontColor=#00695C;swimlaneFillColor=#E0F2F1;rounded=1;" value="可视化图表 (visualize_all)" vertex="1">
+          <mxGeometry height="155" width="950" x="440" y="42" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_v1" parent="L6_viz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="① 完整时间序列图: 全传感器曲线 + 分阶段着色标注" vertex="1">
+          <mxGeometry height="25" width="440" x="15" y="32" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_v2" parent="L6_viz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="② 基线稳定性箱线图: 3×IQR离群点红色实心圆标记" vertex="1">
+          <mxGeometry height="25" width="460" x="470" y="32" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_v3" parent="L6_viz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="③ 响应增量柱状图: 正响应绿色 / 负响应红色" vertex="1">
+          <mxGeometry height="25" width="440" x="15" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_v4" parent="L6_viz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="④ 时间序列相关系数热力图" vertex="1">
+          <mxGeometry height="25" width="460" x="470" y="65" as="geometry" />
+        </mxCell>
+        <mxCell id="L6_v5" parent="L6_viz" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4DB6AC;fontSize=14;fontColor=#00695C;" value="⑤ 雷达对比图: 基线→进样→清洗 归一化对比" vertex="1">
+          <mxGeometry height="25" width="440" x="15" y="98" as="geometry" />
+        </mxCell>
+        <mxCell id="flow_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#1A237E;" value="执行流程 (run_full_analysis)" vertex="1">
+          <mxGeometry height="30" width="600" x="450" y="2140" as="geometry" />
+        </mxCell>
+        <mxCell id="flow_box" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#90A4AE;fontSize=10;fontColor=#37474F;fontStyle=1;" value="parse_file  →  analyze_environment  →  analyze_baseline  →  analyze_sampling  →  calculate_temporal_correlation  →  analyze_cleaning  →  calculate_quality_score  →  generate_report  →  visualize_all" vertex="1">
+          <mxGeometry height="35" width="1300" x="100" y="2175" as="geometry" />
+        </mxCell>
+        <mxCell id="legend" parent="1" style="swimlane;startSize=22;fillColor=#FAFAFA;strokeColor=#BDBDBD;fontSize=10;fontColor=#616161;swimlaneFillColor=#FAFAFA;rounded=1;" value="图例" vertex="1">
+          <mxGeometry height="55" width="1420" x="40" y="2240" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="15" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="输入" vertex="1">
+          <mxGeometry height="18" width="40" x="35" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="80" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="解析" vertex="1">
+          <mxGeometry height="18" width="40" x="100" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="145" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="环境" vertex="1">
+          <mxGeometry height="18" width="40" x="165" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="210" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="核心" vertex="1">
+          <mxGeometry height="18" width="40" x="230" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="275" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="评分" vertex="1">
+          <mxGeometry height="18" width="40" x="295" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2f1;strokeColor=#00897B;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="340" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="输出" vertex="1">
+          <mxGeometry height="18" width="40" x="360" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg7" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEBEE;strokeColor=#E53935;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="410" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg7t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="重构/关键" vertex="1">
+          <mxGeometry height="18" width="60" x="430" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg8" parent="legend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#66BB6A;" value="" vertex="1">
+          <mxGeometry height="16" width="16" x="500" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="leg8t" parent="legend" style="text;html=1;strokeColor=none;fillColor=none;fontSize=9;fontColor=#616161;" value="加分项" vertex="1">
+          <mxGeometry height="18" width="50" x="520" y="28" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
